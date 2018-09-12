@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WebView</title>
+
+    <style type="text/css">
+        body{
+            background: #cbcc1a;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<h2>WebView</h2>
+
+<div>
+    <span>请输入要传递的值：</span><input type="text" id="input">
+</div>
+<div>
+    <button type="button" id="btn">点击传递</button>
+</div>
+
+<script type="text/javascript">
+    var btnEle = document.getElementById("btn");
+    var inputEle = document.getElementById("input");
+    btnEle.addEventListener("click" , function(){
+        var str = inputEle.value;
+        if (window.launcher){
+            // JS 调用 Android 的方法
+            launcher.callAndroid(str);
+        }else{
+            alert("launcher not found!");
+        }
+    });
+
+    var callJS = function(str){
+        inputEle.value = str;
+    }
+
+</script>
+</body>
+</html>
