@@ -6,7 +6,7 @@ import android.webkit.JavascriptInterface;
 /**
  * @author chenxz
  * @date 2018/9/12
- * @desc
+ * @desc 编写 JS 接口类
  */
 public class JsInterface {
 

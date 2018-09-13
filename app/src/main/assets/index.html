@@ -29,7 +29,7 @@
     var inputEle = document.getElementById("input");
     btnEle.addEventListener("click" , function(){
         var str = inputEle.value;
-        if (window.launcher){
+        if (window.launcher){ // 判断 launcher 对象是否存在
             // JS 调用 Android 的方法
             launcher.callAndroid(str);
         }else{

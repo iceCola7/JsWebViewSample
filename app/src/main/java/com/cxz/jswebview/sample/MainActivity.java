@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements JsBridge {
         webView.getSettings().setJavaScriptEnabled(true);
 
         // 给 WebView 添加 JS 接口
+        // 此处的 launcher 可以自定义，最终是 JS 中要使用的对象
         webView.addJavascriptInterface(new JsInterface(this), "launcher");
 
         webView.loadUrl("file:///android_asset/index.html");
