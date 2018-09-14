@@ -10,6 +10,7 @@
             background: #cbcc1a;
         }
 
+
     </style>
 
 </head>
@@ -21,7 +22,8 @@
     <span>请输入要传递的值：</span><input type="text" id="input">
 </div>
 <div>
-    <button type="button" id="btn">点击传递</button>
+    <button type="button" id="btn">addJavascriptInterface调用Android方法</button>
+    <button type="button" id="btn2">shouldOverrideUrlLoading调用Android方法</button>
 </div>
 
 <script type="text/javascript">
@@ -41,6 +43,15 @@
         inputEle.value = str;
     }
 
+    var btnEle2 = document.getElementById("btn2");
+    btnEle2.addEventListener("click", function(){
+        callAndroid();
+    });
+
+    function callAndroid(){
+        // 约定的 url 协议为：js://webview?arg1=111&arg2=222
+        document.location = "js://webview?arg1="+inputEle.value+"&arg2=222";
+    }
 </script>
 </body>
 </html>

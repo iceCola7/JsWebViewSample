@@ -1,17 +1,21 @@
 package com.cxz.jswebview.sample;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.ValueCallback;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements JsBridge {
 
@@ -64,6 +68,32 @@ public class MainActivity extends AppCompatActivity implements JsBridge {
 //                        }
 //                    });
 //                }
+            }
+        });
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                // 一般根据scheme（协议格式） & authority（协议名）判断（前两个参数）
+                // 例如：url = "js://webview?arg1=111&arg2=222"
+                Uri uri = Uri.parse(url);
+                // 如果url的协议 = 预先约定的 js 协议
+                if (uri.getScheme().equals("js")) {
+                    // 拦截url,下面JS开始调用Android需要的方法
+                    if (uri.getAuthority().equals("webview")) {
+                        // 执行JS所需要调用的逻辑
+                        Log.e("TAG", "JS 调用了 Android 的方法");
+                        Set<String> collection = uri.getQueryParameterNames();
+                        Iterator<String> it = collection.iterator();
+                        String result = "";
+                        while (it.hasNext()) {
+                            result += uri.getQueryParameter(it.next()) + ",";
+                        }
+                        tv_result.setText(result);
+                    }
+                    return true;
+                }
+                return super.shouldOverrideUrlLoading(view, url);
             }
         });
 
