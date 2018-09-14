@@ -1,10 +1,13 @@
 package com.cxz.jswebview.sample;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.webkit.ValueCallback;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +55,15 @@ public class MainActivity extends AppCompatActivity implements JsBridge {
                 String str = editText.getText().toString();
                 // Android 调用 JS 方法
                 webView.loadUrl("javascript:if(window.callJS){window.callJS('" + str + "');}");
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                    webView.evaluateJavascript("javascript:if(window.callJS){window.callJS('" + str + "');}", new ValueCallback<String>() {
+//                        @Override
+//                        public void onReceiveValue(String value) {
+//                            Log.e("TAG", "--------->>" + value);
+//                        }
+//                    });
+//                }
             }
         });
 
