@@ -16,8 +16,6 @@ public class JsInterface {
     }
     /**
      * 这个方法由 JS 调用， 不在主线程执行
-     *
-     * @param value
      */
     @JavascriptInterface
     public void callAndroid(String value) {
@@ -28,12 +26,16 @@ public class JsInterface {
 ```
 
 ###### 3.给 WebView 添加 JS 接口
-`webView.addJavascriptInterface(new JsInterface(this), "launcher");// 此处的 launcher 可以自定义，最终是 JS 中要使用的对象 `
+```
+// 此处的 launcher 可以自定义，最终是 JS 中要使用的对象
+webView.addJavascriptInterface(new JsInterface(this), "launcher"); 
+```
 
 ###### 4. JS 代码中调用 Java 方法
 ```
-if (window.launcher){ // 判断 launcher 对象是否存在
-	// 此处的 launcher 要和 第3步中定义的 launcher 保持一致
+// 判断 launcher 对象是否存在
+if (window.launcher){ 
+    // 此处的 launcher 要和 第3步中定义的 launcher 保持一致
     // JS 调用 Android 的方法
     launcher.callAndroid(str);
 }else{
