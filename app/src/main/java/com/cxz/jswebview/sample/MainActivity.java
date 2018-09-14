@@ -7,13 +7,16 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -44,8 +47,12 @@ public class MainActivity extends AppCompatActivity implements JsBridge {
         editText = findViewById(R.id.editText);
         button = findViewById(R.id.button);
 
+        WebSettings settings = webView.getSettings();
+
         // 允许 WebView 加载 JS 代码
-        webView.getSettings().setJavaScriptEnabled(true);
+        settings.setJavaScriptEnabled(true);
+        // 允许 JS 弹窗
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
 
         // 给 WebView 添加 JS 接口
         // 此处的 launcher 可以自定义，最终是 JS 中要使用的对象
@@ -94,6 +101,45 @@ public class MainActivity extends AppCompatActivity implements JsBridge {
                     return true;
                 }
                 return super.shouldOverrideUrlLoading(view, url);
+            }
+        });
+
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+                // 一般根据scheme（协议格式） & authority（协议名）判断（前两个参数）
+                // 例如：url = "js://webview?arg1=111&arg2=222"
+                Uri uri = Uri.parse(message);
+                Log.e("TAG", "----onJsPrompt--->>" + url + "," + message);
+                // 如果url的协议 = 预先约定的 js 协议
+                if (uri.getScheme().equals("js")) {
+                    // 拦截url,下面JS开始调用Android需要的方法
+                    if (uri.getAuthority().equals("prompt")) {
+                        // 执行JS所需要调用的逻辑
+                        Log.e("TAG", "JS 调用了 Android 的方法");
+                        Set<String> collection = uri.getQueryParameterNames();
+                        Iterator<String> it = collection.iterator();
+                        String result2 = "";
+                        while (it.hasNext()) {
+                            result2 += uri.getQueryParameter(it.next()) + ",";
+                        }
+                        tv_result.setText(result2);
+                    }
+                    return true;
+                }
+                return super.onJsPrompt(view, url, message, defaultValue, result);
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+                Log.e("TAG", "----onJsAlert--->>" + url+ "," + message);
+                return super.onJsAlert(view, url, message, result);
+            }
+
+            @Override
+            public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+                Log.e("TAG", "----onJsConfirm--->>" + url+ "," + message);
+                return super.onJsConfirm(view, url, message, result);
             }
         });
 

@@ -24,6 +24,7 @@
 <div>
     <button type="button" id="btn">addJavascriptInterface调用Android方法</button>
     <button type="button" id="btn2">shouldOverrideUrlLoading调用Android方法</button>
+    <button type="button" id="btn3">prompt调用Android方法</button>
 </div>
 
 <script type="text/javascript">
@@ -52,6 +53,13 @@
         // 约定的 url 协议为：js://webview?arg1=111&arg2=222
         document.location = "js://webview?arg1="+inputEle.value+"&arg2=222";
     }
+
+    var btnEle3 = document.getElementById("btn3");
+    btnEle3.addEventListener("click", function(){
+        // 调用 prompt()
+        var result=prompt("js://prompt?arg1="+inputEle.value+"&arg2=222");
+        alert("prompt：" + result);
+    });
 </script>
 </body>
 </html>
