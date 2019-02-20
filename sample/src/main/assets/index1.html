@@ -7,7 +7,6 @@
         function pick() {
             try {
                 launcher.pickPhoto({"needCompress": false}, function (data) {
-                    alert(data.message);
                     var elementById = document.getElementById('firstPhoto');
                     elementById.src = "data:image/jpg;base64," + data.image64;
                     elementById.width=240;

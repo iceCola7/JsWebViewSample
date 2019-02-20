@@ -19,7 +19,8 @@ public class JsInterface {
     }
 
     /**
-     * 这个方法由 JS 调用， 不在主线程执行   暴露给sdk的本地方法
+     * 暴露给sdk的本地方法
+     * 这个方法由 JS 调用， 不在主线程执行
      *
      * @param funcName
      * @param jsonStr
